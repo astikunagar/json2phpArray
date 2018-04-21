@@ -1,48 +1,10 @@
 <?php
-/*$time_slot_arr = Array
-(
-    "timeslot_0" => Array
-        (
-            "sort_period" => "1",
-            "start_time" => "04:00 PM",
-            "end_time" => "07:00 PM",
-            "order_type" => "0",
-            "express_order_limit" => "100",
-            "express_order_price" => "1",
-            "standard_order_limit" => "100 ",
-            "standard_order_price" => "1"
-        ),
-
-    "timeslot_1" => Array
-        (
-            "sort_period" => "2",
-            "start_time" => "07:00 PM",
-            "end_time" => "10:00 PM",
-            "order_type" => "0",
-            "express_order_limit" => "100",
-            "express_order_price" => "1",
-            "standard_order_limit" => "100",
-            "standard_order_price" => "1"
-        ),
-
-    "timeslot_2" => Array
-        (
-            "sort_period" => "3",
-            "start_time" => "07:00 AM",
-            "end_time" => "07:00 AM",
-            "order_type" => "0",
-            "express_order_limit" => "100",
-            "express_order_price" => "1",
-            "standard_order_limit" => "100",
-            "standard_order_price" =>  "1"
-        )
-
-);
-
-echo serialize($time_slot_arr);exit;*/
-if(isset($_REQUEST['use_array']))
-{
-	
+	/**
+	 *
+	 * Recursion alert!
+	 * This function  will traverse through the object and the child beneath the node to extract data.
+	 *
+	 */
 	function traverse_array($arrVal=array())
 	{
 		//var_dump($arrVal)."<hr>";
@@ -66,38 +28,108 @@ if(isset($_REQUEST['use_array']))
 		return $result;
 
 	}
-	if(isset($_REQUEST['use_array']['unserialize']) && $_REQUEST['use_array']['unserialize']=="1")
-	{
-		$arr_value = unserialize($_REQUEST['use_array']['value']);
-	}
-	else
-	{
-		$arr_value = json_decode($_REQUEST['use_array']['value']);
-	}
-
-	$trav = traverse_array($arr_value);
-	echo "---::---<pre>"; print_r($trav);echo "</pre><hr>";
-}
 ?>
-<html>
-<head runat="server">
-    <title>Json-Beautify</title>
-    <link runat="server" rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <link runat="server" rel="icon" href="favicon.ico" type="image/ico"/>
-</head>
-<body>
-	<form name="check_array" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-		<label for="josn_array" name="array_label"> Input Json Array </label>	
-		<textarea name="use_array[value]" col="100" row="5"></textarea>
-		<br>
-		<label for="josn_array" name="array_label"> Input comma separated Keys to display </label>	
-		<textarea name="use_array[keys]" col="100" row="5"></textarea>
-		<br>
-		<input type="radio" name="use_array[unserialize]" value="1">Yes
-		&nbsp;
-		<input type="radio" name="use_array[unserialize]" value="0">No
-		<br>
-		<input type='submit' name="use_array[submit]" value="Visit array">
-	</form>
-</body>
+
+
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>Json-Beautify</title>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel = "stylesheet" type = "text/css" href = "css/bootstrap.min.css" />
+		<style>
+		.input, .output{
+			border : 1px solid orange;
+			border-radius: 10px;
+			margin: 1%;
+			box-shadow: 5px 5px;
+		}
+		.bg-gradient {
+			background-image: -moz-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+			background-image: -webkit-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+			background-image: -ms-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+			background-image: linear-gradient( 135deg, #29abe0 0%, #d9534f 100%);
+		}
+		.whiteTitle{
+			    font-family: "Comic Sans MS", cursive, sans-serif;
+			    color: #FEFEFE;
+		}
+		.greenTitle{
+			    font-family: "Comic Sans MS", cursive, sans-serif;
+			    color: #93c54b;
+			    font-weight: bold;
+		}
+		</style>
+	</head>
+	<body class="bg-gradient">
+		<section class="col-lg-12">
+			<center><h1 class='whiteTitle'>Json/Serialized Encoded String 2 Php Array</h1></center>
+		</section>
+		<section class="col-lg-4 input">
+			<form class="form-horizontal" name="check_array" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+				<fieldset>
+					<legend></legend>
+					<div class="form-group">
+						<label for="josn_array" class="col-lg-4 control-label whiteTitle" name="array_label"> Input Json Array </label>
+						<div class="col-lg-7">
+							<textarea name="use_array[value]" class="form-control" cols="100" rows="15">
+								<?php 
+									if(isset($_REQUEST['use_array']['value']) && $_REQUEST['use_array']['value']!=="")
+									{
+										echo $_REQUEST['use_array']['value'];
+									}
+								?>
+							</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="textArea" class="col-lg-4 control-label whiteTitle">Is is a Serialized String?</label>
+						<div class="col-lg-7">
+							<input type="radio" name="use_array[unserialize]" value="1">Yes
+							<input type="radio" name="use_array[unserialize]" value="0">No
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-12 col-lg-offset-2">
+							<button type="reset" class="btn btn-default">Cancel</button>
+							<button type="submit" class="btn btn-primary" name="use_array[submit]">Submit</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</section>
+		<?php 
+			if(isset($_REQUEST['use_array']))
+			{
+		?>
+				<section class="col-lg-7 output">
+				<?php
+
+					if(isset($_REQUEST['use_array']['unserialize']) && $_REQUEST['use_array']['unserialize']=="1")
+					{
+						$arr_value = unserialize($_REQUEST['use_array']['value']);
+					}
+					else
+					{
+						$arr_value = json_decode($_REQUEST['use_array']['value']);
+					}
+
+					$trav = traverse_array($arr_value);
+					if(is_array($trav) && !empty($trav))
+					{
+			 			echo '<p><h4 class="greenTitle"><center>PHP Array</center></h4></p><textarea cols=85 rows=23>';
+						print_r($trav);echo "</textarea>";
+					}
+					else
+					{
+			 	?>			
+			 		<center> <p class="text-warning whiteTitle"> Please insert a valid encoded string!</p><center>
+			 		<?php
+					}
+					?>
+				</section>
+		<?php
+			}
+		?>
+	</body>
 </html>
